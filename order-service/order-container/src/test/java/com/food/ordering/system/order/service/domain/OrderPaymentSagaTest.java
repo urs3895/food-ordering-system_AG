@@ -106,12 +106,12 @@ public class OrderPaymentSagaTest {
 
     private PaymentResponse getPaymentResponse() {
         return PaymentResponse.builder()
-                .id(UUID.randomUUID().toString())
-                .sagaId(SAGA_ID.toString())
+                .id(UUID.randomUUID())
+                .sagaId(SAGA_ID)
                 .paymentStatus(PaymentStatus.COMPLETED)
-                .paymentId(PAYMENT_ID.toString())
-                .orderId(ORDER_ID.toString())
-                .customerId(CUSTOMER_ID.toString())
+                .paymentId(PAYMENT_ID)
+                .orderId(ORDER_ID)
+                .customerId(CUSTOMER_ID)
                 .price(PRICE)
                 .createdAt(Instant.now())
                 .failureMessages(new ArrayList<>())

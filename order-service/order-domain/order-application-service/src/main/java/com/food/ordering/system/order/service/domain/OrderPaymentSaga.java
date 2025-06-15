@@ -59,8 +59,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
     @Transactional
     public void process(PaymentResponse paymentResponse) {
         Optional<OrderPaymentOutboxMessage> orderPaymentOutboxMessageResponse =
-                paymentOutboxHelper.getPaymentOutboxMessageBySagaIdAndSagaStatus(
-                        UUID.fromString(paymentResponse.getSagaId()),
+                paymentOutboxHelper.getPaymentOutboxMessageBySagaIdAndSagaStatus((paymentResponse.getSagaId()),
                         SagaStatus.STARTED);
 
         if (orderPaymentOutboxMessageResponse.isEmpty()) {
@@ -82,7 +81,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
                         domainEvent.getOrder().getOrderStatus(),
                         sagaStatus,
                         OutboxStatus.STARTED,
-                        UUID.fromString(paymentResponse.getSagaId()));
+                       paymentResponse.getSagaId());
 
         log.info("Order with id: {} is paid", domainEvent.getOrder().getId().getValue());
     }
@@ -92,8 +91,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
     public void rollback(PaymentResponse paymentResponse) {
 
         Optional<OrderPaymentOutboxMessage> orderPaymentOutboxMessageResponse =
-                paymentOutboxHelper.getPaymentOutboxMessageBySagaIdAndSagaStatus(
-                        UUID.fromString(paymentResponse.getSagaId()),
+                paymentOutboxHelper.getPaymentOutboxMessageBySagaIdAndSagaStatus((paymentResponse.getSagaId()),
                         getCurrentSagaStatus(paymentResponse.getPaymentStatus()));
 
         if (orderPaymentOutboxMessageResponse.isEmpty()) {
@@ -111,7 +109,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
                 order.getOrderStatus(), sagaStatus));
 
         if (paymentResponse.getPaymentStatus() == PaymentStatus.CANCELLED) {
-            approvalOutboxHelper.save(getUpdatedApprovalOutboxMessage(paymentResponse.getSagaId(),
+            approvalOutboxHelper.save(getUpdatedApprovalOutboxMessage(String.valueOf(paymentResponse.getSagaId()),
                     order.getOrderStatus(), sagaStatus));
         }
 
@@ -141,7 +139,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
 
     private OrderPaidEvent completePaymentForOrder(PaymentResponse paymentResponse) {
         log.info("Completing payment for order with id: {}", paymentResponse.getOrderId());
-        Order order = findOrder(paymentResponse.getOrderId());
+        Order order = findOrder(String.valueOf(paymentResponse.getOrderId()));
         OrderPaidEvent domainEvent = orderDomainService.payOrder(order);
         orderRepository.save(order);
         return domainEvent;
@@ -157,7 +155,7 @@ public class OrderPaymentSaga implements SagaStep<PaymentResponse> {
 
     private Order rollbackPaymentForOrder(PaymentResponse paymentResponse) {
         log.info("Cancelling order with id: {}", paymentResponse.getOrderId());
-        Order order = findOrder(paymentResponse.getOrderId());
+        Order order = findOrder(String.valueOf(paymentResponse.getOrderId()));
         orderDomainService.cancelOrder(order, paymentResponse.getFailureMessages());
         orderRepository.save(order);
         return order;

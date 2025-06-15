@@ -39,7 +39,7 @@ public class CustomerCreatedEventKafkaPublisher implements CustomerMessagePublis
                     .paymentResponseAvroModelToPaymentResponse(customerCreatedEvent);
 
             kafkaProducer.send(customerServiceConfigData.getCustomerTopicName(),
-                            customerAvroModel.getId(),
+                    String.valueOf(customerAvroModel.getId()),
                             customerAvroModel,
                             getBiConsumerCallback(
                             customerServiceConfigData.getCustomerTopicName(),

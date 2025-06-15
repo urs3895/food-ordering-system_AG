@@ -99,7 +99,7 @@ public class OrderDataMapper {
     }
 
     public Customer customerModelToCustomer(CustomerModel customerModel) {
-        return new Customer(new CustomerId(UUID.fromString(customerModel.getId())),
+        return new Customer(new CustomerId(customerModel.getId()),
                 customerModel.getUsername(),
                 customerModel.getFirstName(),
                 customerModel.getLastName());

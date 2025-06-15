@@ -5,7 +5,6 @@
  */
 package com.food.ordering.system.kafka.order.avro.model;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
 import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
@@ -23,10 +22,10 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
   private static final SpecificData MODEL$ = new SpecificData();
 
   private static final BinaryMessageEncoder<Product> ENCODER =
-          new BinaryMessageEncoder<Product>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<Product> DECODER =
-          new BinaryMessageDecoder<Product>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -50,7 +49,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<Product> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<Product>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -69,7 +68,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
    * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
    */
   public static Product fromByteBuffer(
-          java.nio.ByteBuffer b) throws java.io.IOException {
+      java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
@@ -93,24 +92,30 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
     this.quantity = quantity;
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
-      case 0: return id;
-      case 1: return quantity;
-      default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    case 0: return id;
+    case 1: return quantity;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-      case 0: id = value$ != null ? value$.toString() : null; break;
-      case 1: quantity = (java.lang.Integer)value$; break;
-      default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    case 0: id = value$ != null ? value$.toString() : null; break;
+    case 1: quantity = (java.lang.Integer)value$; break;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -187,7 +192,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
    */
   @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<Product>
-          implements org.apache.avro.data.RecordBuilder<Product> {
+    implements org.apache.avro.data.RecordBuilder<Product> {
 
     private java.lang.String id;
     private int quantity;
@@ -230,19 +235,19 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
     }
 
     /**
-     * Gets the value of the 'id' field.
-     * @return The value.
-     */
+      * Gets the value of the 'id' field.
+      * @return The value.
+      */
     public java.lang.String getId() {
       return id;
     }
 
 
     /**
-     * Sets the value of the 'id' field.
-     * @param value The value of 'id'.
-     * @return This builder.
-     */
+      * Sets the value of the 'id' field.
+      * @param value The value of 'id'.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.Product.Builder setId(java.lang.String value) {
       validate(fields()[0], value);
       this.id = value;
@@ -251,18 +256,18 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
     }
 
     /**
-     * Checks whether the 'id' field has been set.
-     * @return True if the 'id' field has been set, false otherwise.
-     */
+      * Checks whether the 'id' field has been set.
+      * @return True if the 'id' field has been set, false otherwise.
+      */
     public boolean hasId() {
       return fieldSetFlags()[0];
     }
 
 
     /**
-     * Clears the value of the 'id' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'id' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.Product.Builder clearId() {
       id = null;
       fieldSetFlags()[0] = false;
@@ -270,19 +275,19 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
     }
 
     /**
-     * Gets the value of the 'quantity' field.
-     * @return The value.
-     */
+      * Gets the value of the 'quantity' field.
+      * @return The value.
+      */
     public int getQuantity() {
       return quantity;
     }
 
 
     /**
-     * Sets the value of the 'quantity' field.
-     * @param value The value of 'quantity'.
-     * @return This builder.
-     */
+      * Sets the value of the 'quantity' field.
+      * @param value The value of 'quantity'.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.Product.Builder setQuantity(int value) {
       validate(fields()[1], value);
       this.quantity = value;
@@ -291,18 +296,18 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
     }
 
     /**
-     * Checks whether the 'quantity' field has been set.
-     * @return True if the 'quantity' field has been set, false otherwise.
-     */
+      * Checks whether the 'quantity' field has been set.
+      * @return True if the 'quantity' field has been set, false otherwise.
+      */
     public boolean hasQuantity() {
       return fieldSetFlags()[1];
     }
 
 
     /**
-     * Clears the value of the 'quantity' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'quantity' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.Product.Builder clearQuantity() {
       fieldSetFlags()[1] = false;
       return this;
@@ -326,26 +331,26 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumWriter<Product>
-          WRITER$ = (org.apache.avro.io.DatumWriter<Product>)MODEL$.createDatumWriter(SCHEMA$);
+    WRITER$ = (org.apache.avro.io.DatumWriter<Product>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
-          throws java.io.IOException {
+    throws java.io.IOException {
     WRITER$.write(this, SpecificData.getEncoder(out));
   }
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumReader<Product>
-          READER$ = (org.apache.avro.io.DatumReader<Product>)MODEL$.createDatumReader(SCHEMA$);
+    READER$ = (org.apache.avro.io.DatumReader<Product>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
-          throws java.io.IOException {
+    throws java.io.IOException {
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
   @Override protected boolean hasCustomCoders() { return true; }
 
   @Override public void customEncode(org.apache.avro.io.Encoder out)
-          throws java.io.IOException
+    throws java.io.IOException
   {
     out.writeString(this.id);
 
@@ -354,7 +359,7 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
   }
 
   @Override public void customDecode(org.apache.avro.io.ResolvingDecoder in)
-          throws java.io.IOException
+    throws java.io.IOException
   {
     org.apache.avro.Schema.Field[] fieldOrder = in.readFieldOrderIfDiff();
     if (fieldOrder == null) {
@@ -365,16 +370,16 @@ public class Product extends org.apache.avro.specific.SpecificRecordBase impleme
     } else {
       for (int i = 0; i < 2; i++) {
         switch (fieldOrder[i].pos()) {
-          case 0:
-            this.id = in.readString();
-            break;
+        case 0:
+          this.id = in.readString();
+          break;
 
-          case 1:
-            this.quantity = in.readInt();
-            break;
+        case 1:
+          this.quantity = in.readInt();
+          break;
 
-          default:
-            throw new java.io.IOException("Corrupt ResolvingDecoder.");
+        default:
+          throw new java.io.IOException("Corrupt ResolvingDecoder.");
         }
       }
     }

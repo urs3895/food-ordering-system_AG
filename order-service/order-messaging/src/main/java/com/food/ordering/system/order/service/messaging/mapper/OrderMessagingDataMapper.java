@@ -50,10 +50,10 @@ public class OrderMessagingDataMapper {
     public PaymentRequestAvroModel orderPaymentEventToPaymentRequestAvroModel(String sagaId, OrderPaymentEventPayload
             orderPaymentEventPayload) {
         return PaymentRequestAvroModel.newBuilder()
-                .setId(UUID.randomUUID().toString())
-                .setSagaId(sagaId)
-                .setCustomerId(orderPaymentEventPayload.getCustomerId())
-                .setOrderId(orderPaymentEventPayload.getOrderId())
+                .setId(UUID.randomUUID())
+                .setSagaId(UUID.fromString(sagaId))
+                .setCustomerId(UUID.fromString(orderPaymentEventPayload.getCustomerId()))
+                .setOrderId(UUID.fromString(orderPaymentEventPayload.getOrderId()))
                 .setPrice(orderPaymentEventPayload.getPrice())
                 .setCreatedAt(orderPaymentEventPayload.getCreatedAt().toInstant())
                 .setPaymentOrderStatus(PaymentOrderStatus.valueOf(orderPaymentEventPayload.getPaymentOrderStatus()))
@@ -64,10 +64,10 @@ public class OrderMessagingDataMapper {
     orderApprovalEventToRestaurantApprovalRequestAvroModel(String sagaId, OrderApprovalEventPayload
             orderApprovalEventPayload) {
         return RestaurantApprovalRequestAvroModel.newBuilder()
-                .setId(UUID.randomUUID().toString())
-                .setSagaId(sagaId)
-                .setOrderId(orderApprovalEventPayload.getOrderId())
-                .setRestaurantId(orderApprovalEventPayload.getRestaurantId())
+                .setId(UUID.randomUUID())
+                .setSagaId(UUID.fromString(sagaId))
+                .setOrderId(UUID.fromString(orderApprovalEventPayload.getOrderId()))
+                .setRestaurantId(UUID.fromString(orderApprovalEventPayload.getRestaurantId()))
                 .setRestaurantOrderStatus(RestaurantOrderStatus
                         .valueOf(orderApprovalEventPayload.getRestaurantOrderStatus()))
                 .setProducts(orderApprovalEventPayload.getProducts().stream().map(orderApprovalEventProduct ->

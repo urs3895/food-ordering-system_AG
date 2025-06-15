@@ -5,7 +5,6 @@
  */
 package com.food.ordering.system.kafka.order.avro.model;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
 import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
@@ -22,15 +21,16 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
 
   private static final SpecificData MODEL$ = new SpecificData();
   static {
+    MODEL$.addLogicalTypeConversion(new org.apache.avro.Conversions.UUIDConversion());
     MODEL$.addLogicalTypeConversion(new org.apache.avro.data.TimeConversions.TimestampMillisConversion());
     MODEL$.addLogicalTypeConversion(new org.apache.avro.Conversions.DecimalConversion());
   }
 
   private static final BinaryMessageEncoder<RestaurantApprovalRequestAvroModel> ENCODER =
-          new BinaryMessageEncoder<RestaurantApprovalRequestAvroModel>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<RestaurantApprovalRequestAvroModel> DECODER =
-          new BinaryMessageDecoder<RestaurantApprovalRequestAvroModel>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -54,7 +54,7 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<RestaurantApprovalRequestAvroModel> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<RestaurantApprovalRequestAvroModel>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -73,14 +73,14 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
    * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
    */
   public static RestaurantApprovalRequestAvroModel fromByteBuffer(
-          java.nio.ByteBuffer b) throws java.io.IOException {
+      java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-  private java.lang.String id;
-  private java.lang.String sagaId;
-  private java.lang.String restaurantId;
-  private java.lang.String orderId;
+  private java.util.UUID id;
+  private java.util.UUID sagaId;
+  private java.util.UUID restaurantId;
+  private java.util.UUID orderId;
   private com.food.ordering.system.kafka.order.avro.model.RestaurantOrderStatus restaurantOrderStatus;
   private java.util.List<com.food.ordering.system.kafka.order.avro.model.Product> products;
   private java.math.BigDecimal price;
@@ -104,7 +104,7 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
    * @param price The new value for price
    * @param createdAt The new value for createdAt
    */
-  public RestaurantApprovalRequestAvroModel(java.lang.String id, java.lang.String sagaId, java.lang.String restaurantId, java.lang.String orderId, com.food.ordering.system.kafka.order.avro.model.RestaurantOrderStatus restaurantOrderStatus, java.util.List<com.food.ordering.system.kafka.order.avro.model.Product> products, java.math.BigDecimal price, java.time.Instant createdAt) {
+  public RestaurantApprovalRequestAvroModel(java.util.UUID id, java.util.UUID sagaId, java.util.UUID restaurantId, java.util.UUID orderId, com.food.ordering.system.kafka.order.avro.model.RestaurantOrderStatus restaurantOrderStatus, java.util.List<com.food.ordering.system.kafka.order.avro.model.Product> products, java.math.BigDecimal price, java.time.Instant createdAt) {
     this.id = id;
     this.sagaId = sagaId;
     this.restaurantId = restaurantId;
@@ -115,35 +115,40 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     this.createdAt = createdAt.truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
-      case 0: return id;
-      case 1: return sagaId;
-      case 2: return restaurantId;
-      case 3: return orderId;
-      case 4: return restaurantOrderStatus;
-      case 5: return products;
-      case 6: return price;
-      case 7: return createdAt;
-      default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    case 0: return id;
+    case 1: return sagaId;
+    case 2: return restaurantId;
+    case 3: return orderId;
+    case 4: return restaurantOrderStatus;
+    case 5: return products;
+    case 6: return price;
+    case 7: return createdAt;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
   private static final org.apache.avro.Conversion<?>[] conversions =
-          new org.apache.avro.Conversion<?>[] {
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  null,
-                  new org.apache.avro.Conversions.DecimalConversion(),
-                  new org.apache.avro.data.TimeConversions.TimestampMillisConversion(),
-                  null
-          };
+      new org.apache.avro.Conversion<?>[] {
+      new org.apache.avro.Conversions.UUIDConversion(),
+      new org.apache.avro.Conversions.UUIDConversion(),
+      new org.apache.avro.Conversions.UUIDConversion(),
+      new org.apache.avro.Conversions.UUIDConversion(),
+      null,
+      null,
+      new org.apache.avro.Conversions.DecimalConversion(),
+      new org.apache.avro.data.TimeConversions.TimestampMillisConversion(),
+      null
+  };
 
   @Override
   public org.apache.avro.Conversion<?> getConversion(int field) {
@@ -151,18 +156,19 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-      case 0: id = value$ != null ? value$.toString() : null; break;
-      case 1: sagaId = value$ != null ? value$.toString() : null; break;
-      case 2: restaurantId = value$ != null ? value$.toString() : null; break;
-      case 3: orderId = value$ != null ? value$.toString() : null; break;
-      case 4: restaurantOrderStatus = (com.food.ordering.system.kafka.order.avro.model.RestaurantOrderStatus)value$; break;
-      case 5: products = (java.util.List<com.food.ordering.system.kafka.order.avro.model.Product>)value$; break;
-      case 6: price = (java.math.BigDecimal)value$; break;
-      case 7: createdAt = (java.time.Instant)value$; break;
-      default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    case 0: id = (java.util.UUID)value$; break;
+    case 1: sagaId = (java.util.UUID)value$; break;
+    case 2: restaurantId = (java.util.UUID)value$; break;
+    case 3: orderId = (java.util.UUID)value$; break;
+    case 4: restaurantOrderStatus = (com.food.ordering.system.kafka.order.avro.model.RestaurantOrderStatus)value$; break;
+    case 5: products = (java.util.List<com.food.ordering.system.kafka.order.avro.model.Product>)value$; break;
+    case 6: price = (java.math.BigDecimal)value$; break;
+    case 7: createdAt = (java.time.Instant)value$; break;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -170,7 +176,7 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
    * Gets the value of the 'id' field.
    * @return The value of the 'id' field.
    */
-  public java.lang.String getId() {
+  public java.util.UUID getId() {
     return id;
   }
 
@@ -179,7 +185,7 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
    * Sets the value of the 'id' field.
    * @param value the value to set.
    */
-  public void setId(java.lang.String value) {
+  public void setId(java.util.UUID value) {
     this.id = value;
   }
 
@@ -187,7 +193,7 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
    * Gets the value of the 'sagaId' field.
    * @return The value of the 'sagaId' field.
    */
-  public java.lang.String getSagaId() {
+  public java.util.UUID getSagaId() {
     return sagaId;
   }
 
@@ -196,7 +202,7 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
    * Sets the value of the 'sagaId' field.
    * @param value the value to set.
    */
-  public void setSagaId(java.lang.String value) {
+  public void setSagaId(java.util.UUID value) {
     this.sagaId = value;
   }
 
@@ -204,7 +210,7 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
    * Gets the value of the 'restaurantId' field.
    * @return The value of the 'restaurantId' field.
    */
-  public java.lang.String getRestaurantId() {
+  public java.util.UUID getRestaurantId() {
     return restaurantId;
   }
 
@@ -213,7 +219,7 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
    * Sets the value of the 'restaurantId' field.
    * @param value the value to set.
    */
-  public void setRestaurantId(java.lang.String value) {
+  public void setRestaurantId(java.util.UUID value) {
     this.restaurantId = value;
   }
 
@@ -221,7 +227,7 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
    * Gets the value of the 'orderId' field.
    * @return The value of the 'orderId' field.
    */
-  public java.lang.String getOrderId() {
+  public java.util.UUID getOrderId() {
     return orderId;
   }
 
@@ -230,7 +236,7 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
    * Sets the value of the 'orderId' field.
    * @param value the value to set.
    */
-  public void setOrderId(java.lang.String value) {
+  public void setOrderId(java.util.UUID value) {
     this.orderId = value;
   }
 
@@ -341,12 +347,12 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
    */
   @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<RestaurantApprovalRequestAvroModel>
-          implements org.apache.avro.data.RecordBuilder<RestaurantApprovalRequestAvroModel> {
+    implements org.apache.avro.data.RecordBuilder<RestaurantApprovalRequestAvroModel> {
 
-    private java.lang.String id;
-    private java.lang.String sagaId;
-    private java.lang.String restaurantId;
-    private java.lang.String orderId;
+    private java.util.UUID id;
+    private java.util.UUID sagaId;
+    private java.util.UUID restaurantId;
+    private java.util.UUID orderId;
     private com.food.ordering.system.kafka.order.avro.model.RestaurantOrderStatus restaurantOrderStatus;
     private java.util.List<com.food.ordering.system.kafka.order.avro.model.Product> products;
     private java.math.BigDecimal price;
@@ -438,20 +444,20 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Gets the value of the 'id' field.
-     * @return The value.
-     */
-    public java.lang.String getId() {
+      * Gets the value of the 'id' field.
+      * @return The value.
+      */
+    public java.util.UUID getId() {
       return id;
     }
 
 
     /**
-     * Sets the value of the 'id' field.
-     * @param value The value of 'id'.
-     * @return This builder.
-     */
-    public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder setId(java.lang.String value) {
+      * Sets the value of the 'id' field.
+      * @param value The value of 'id'.
+      * @return This builder.
+      */
+    public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder setId(java.util.UUID value) {
       validate(fields()[0], value);
       this.id = value;
       fieldSetFlags()[0] = true;
@@ -459,18 +465,18 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Checks whether the 'id' field has been set.
-     * @return True if the 'id' field has been set, false otherwise.
-     */
+      * Checks whether the 'id' field has been set.
+      * @return True if the 'id' field has been set, false otherwise.
+      */
     public boolean hasId() {
       return fieldSetFlags()[0];
     }
 
 
     /**
-     * Clears the value of the 'id' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'id' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder clearId() {
       id = null;
       fieldSetFlags()[0] = false;
@@ -478,20 +484,20 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Gets the value of the 'sagaId' field.
-     * @return The value.
-     */
-    public java.lang.String getSagaId() {
+      * Gets the value of the 'sagaId' field.
+      * @return The value.
+      */
+    public java.util.UUID getSagaId() {
       return sagaId;
     }
 
 
     /**
-     * Sets the value of the 'sagaId' field.
-     * @param value The value of 'sagaId'.
-     * @return This builder.
-     */
-    public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder setSagaId(java.lang.String value) {
+      * Sets the value of the 'sagaId' field.
+      * @param value The value of 'sagaId'.
+      * @return This builder.
+      */
+    public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder setSagaId(java.util.UUID value) {
       validate(fields()[1], value);
       this.sagaId = value;
       fieldSetFlags()[1] = true;
@@ -499,18 +505,18 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Checks whether the 'sagaId' field has been set.
-     * @return True if the 'sagaId' field has been set, false otherwise.
-     */
+      * Checks whether the 'sagaId' field has been set.
+      * @return True if the 'sagaId' field has been set, false otherwise.
+      */
     public boolean hasSagaId() {
       return fieldSetFlags()[1];
     }
 
 
     /**
-     * Clears the value of the 'sagaId' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'sagaId' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder clearSagaId() {
       sagaId = null;
       fieldSetFlags()[1] = false;
@@ -518,20 +524,20 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Gets the value of the 'restaurantId' field.
-     * @return The value.
-     */
-    public java.lang.String getRestaurantId() {
+      * Gets the value of the 'restaurantId' field.
+      * @return The value.
+      */
+    public java.util.UUID getRestaurantId() {
       return restaurantId;
     }
 
 
     /**
-     * Sets the value of the 'restaurantId' field.
-     * @param value The value of 'restaurantId'.
-     * @return This builder.
-     */
-    public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder setRestaurantId(java.lang.String value) {
+      * Sets the value of the 'restaurantId' field.
+      * @param value The value of 'restaurantId'.
+      * @return This builder.
+      */
+    public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder setRestaurantId(java.util.UUID value) {
       validate(fields()[2], value);
       this.restaurantId = value;
       fieldSetFlags()[2] = true;
@@ -539,18 +545,18 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Checks whether the 'restaurantId' field has been set.
-     * @return True if the 'restaurantId' field has been set, false otherwise.
-     */
+      * Checks whether the 'restaurantId' field has been set.
+      * @return True if the 'restaurantId' field has been set, false otherwise.
+      */
     public boolean hasRestaurantId() {
       return fieldSetFlags()[2];
     }
 
 
     /**
-     * Clears the value of the 'restaurantId' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'restaurantId' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder clearRestaurantId() {
       restaurantId = null;
       fieldSetFlags()[2] = false;
@@ -558,20 +564,20 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Gets the value of the 'orderId' field.
-     * @return The value.
-     */
-    public java.lang.String getOrderId() {
+      * Gets the value of the 'orderId' field.
+      * @return The value.
+      */
+    public java.util.UUID getOrderId() {
       return orderId;
     }
 
 
     /**
-     * Sets the value of the 'orderId' field.
-     * @param value The value of 'orderId'.
-     * @return This builder.
-     */
-    public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder setOrderId(java.lang.String value) {
+      * Sets the value of the 'orderId' field.
+      * @param value The value of 'orderId'.
+      * @return This builder.
+      */
+    public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder setOrderId(java.util.UUID value) {
       validate(fields()[3], value);
       this.orderId = value;
       fieldSetFlags()[3] = true;
@@ -579,18 +585,18 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Checks whether the 'orderId' field has been set.
-     * @return True if the 'orderId' field has been set, false otherwise.
-     */
+      * Checks whether the 'orderId' field has been set.
+      * @return True if the 'orderId' field has been set, false otherwise.
+      */
     public boolean hasOrderId() {
       return fieldSetFlags()[3];
     }
 
 
     /**
-     * Clears the value of the 'orderId' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'orderId' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder clearOrderId() {
       orderId = null;
       fieldSetFlags()[3] = false;
@@ -598,19 +604,19 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Gets the value of the 'restaurantOrderStatus' field.
-     * @return The value.
-     */
+      * Gets the value of the 'restaurantOrderStatus' field.
+      * @return The value.
+      */
     public com.food.ordering.system.kafka.order.avro.model.RestaurantOrderStatus getRestaurantOrderStatus() {
       return restaurantOrderStatus;
     }
 
 
     /**
-     * Sets the value of the 'restaurantOrderStatus' field.
-     * @param value The value of 'restaurantOrderStatus'.
-     * @return This builder.
-     */
+      * Sets the value of the 'restaurantOrderStatus' field.
+      * @param value The value of 'restaurantOrderStatus'.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder setRestaurantOrderStatus(com.food.ordering.system.kafka.order.avro.model.RestaurantOrderStatus value) {
       validate(fields()[4], value);
       this.restaurantOrderStatus = value;
@@ -619,18 +625,18 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Checks whether the 'restaurantOrderStatus' field has been set.
-     * @return True if the 'restaurantOrderStatus' field has been set, false otherwise.
-     */
+      * Checks whether the 'restaurantOrderStatus' field has been set.
+      * @return True if the 'restaurantOrderStatus' field has been set, false otherwise.
+      */
     public boolean hasRestaurantOrderStatus() {
       return fieldSetFlags()[4];
     }
 
 
     /**
-     * Clears the value of the 'restaurantOrderStatus' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'restaurantOrderStatus' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder clearRestaurantOrderStatus() {
       restaurantOrderStatus = null;
       fieldSetFlags()[4] = false;
@@ -638,19 +644,19 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Gets the value of the 'products' field.
-     * @return The value.
-     */
+      * Gets the value of the 'products' field.
+      * @return The value.
+      */
     public java.util.List<com.food.ordering.system.kafka.order.avro.model.Product> getProducts() {
       return products;
     }
 
 
     /**
-     * Sets the value of the 'products' field.
-     * @param value The value of 'products'.
-     * @return This builder.
-     */
+      * Sets the value of the 'products' field.
+      * @param value The value of 'products'.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder setProducts(java.util.List<com.food.ordering.system.kafka.order.avro.model.Product> value) {
       validate(fields()[5], value);
       this.products = value;
@@ -659,18 +665,18 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Checks whether the 'products' field has been set.
-     * @return True if the 'products' field has been set, false otherwise.
-     */
+      * Checks whether the 'products' field has been set.
+      * @return True if the 'products' field has been set, false otherwise.
+      */
     public boolean hasProducts() {
       return fieldSetFlags()[5];
     }
 
 
     /**
-     * Clears the value of the 'products' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'products' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder clearProducts() {
       products = null;
       fieldSetFlags()[5] = false;
@@ -678,19 +684,19 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Gets the value of the 'price' field.
-     * @return The value.
-     */
+      * Gets the value of the 'price' field.
+      * @return The value.
+      */
     public java.math.BigDecimal getPrice() {
       return price;
     }
 
 
     /**
-     * Sets the value of the 'price' field.
-     * @param value The value of 'price'.
-     * @return This builder.
-     */
+      * Sets the value of the 'price' field.
+      * @param value The value of 'price'.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder setPrice(java.math.BigDecimal value) {
       validate(fields()[6], value);
       this.price = value;
@@ -699,18 +705,18 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Checks whether the 'price' field has been set.
-     * @return True if the 'price' field has been set, false otherwise.
-     */
+      * Checks whether the 'price' field has been set.
+      * @return True if the 'price' field has been set, false otherwise.
+      */
     public boolean hasPrice() {
       return fieldSetFlags()[6];
     }
 
 
     /**
-     * Clears the value of the 'price' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'price' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder clearPrice() {
       price = null;
       fieldSetFlags()[6] = false;
@@ -718,19 +724,19 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Gets the value of the 'createdAt' field.
-     * @return The value.
-     */
+      * Gets the value of the 'createdAt' field.
+      * @return The value.
+      */
     public java.time.Instant getCreatedAt() {
       return createdAt;
     }
 
 
     /**
-     * Sets the value of the 'createdAt' field.
-     * @param value The value of 'createdAt'.
-     * @return This builder.
-     */
+      * Sets the value of the 'createdAt' field.
+      * @param value The value of 'createdAt'.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder setCreatedAt(java.time.Instant value) {
       validate(fields()[7], value);
       this.createdAt = value.truncatedTo(java.time.temporal.ChronoUnit.MILLIS);
@@ -739,18 +745,18 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     }
 
     /**
-     * Checks whether the 'createdAt' field has been set.
-     * @return True if the 'createdAt' field has been set, false otherwise.
-     */
+      * Checks whether the 'createdAt' field has been set.
+      * @return True if the 'createdAt' field has been set, false otherwise.
+      */
     public boolean hasCreatedAt() {
       return fieldSetFlags()[7];
     }
 
 
     /**
-     * Clears the value of the 'createdAt' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'createdAt' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.RestaurantApprovalRequestAvroModel.Builder clearCreatedAt() {
       fieldSetFlags()[7] = false;
       return this;
@@ -761,10 +767,10 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
     public RestaurantApprovalRequestAvroModel build() {
       try {
         RestaurantApprovalRequestAvroModel record = new RestaurantApprovalRequestAvroModel();
-        record.id = fieldSetFlags()[0] ? this.id : (java.lang.String) defaultValue(fields()[0]);
-        record.sagaId = fieldSetFlags()[1] ? this.sagaId : (java.lang.String) defaultValue(fields()[1]);
-        record.restaurantId = fieldSetFlags()[2] ? this.restaurantId : (java.lang.String) defaultValue(fields()[2]);
-        record.orderId = fieldSetFlags()[3] ? this.orderId : (java.lang.String) defaultValue(fields()[3]);
+        record.id = fieldSetFlags()[0] ? this.id : (java.util.UUID) defaultValue(fields()[0]);
+        record.sagaId = fieldSetFlags()[1] ? this.sagaId : (java.util.UUID) defaultValue(fields()[1]);
+        record.restaurantId = fieldSetFlags()[2] ? this.restaurantId : (java.util.UUID) defaultValue(fields()[2]);
+        record.orderId = fieldSetFlags()[3] ? this.orderId : (java.util.UUID) defaultValue(fields()[3]);
         record.restaurantOrderStatus = fieldSetFlags()[4] ? this.restaurantOrderStatus : (com.food.ordering.system.kafka.order.avro.model.RestaurantOrderStatus) defaultValue(fields()[4]);
         record.products = fieldSetFlags()[5] ? this.products : (java.util.List<com.food.ordering.system.kafka.order.avro.model.Product>) defaultValue(fields()[5]);
         record.price = fieldSetFlags()[6] ? this.price : (java.math.BigDecimal) defaultValue(fields()[6]);
@@ -780,19 +786,19 @@ public class RestaurantApprovalRequestAvroModel extends org.apache.avro.specific
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumWriter<RestaurantApprovalRequestAvroModel>
-          WRITER$ = (org.apache.avro.io.DatumWriter<RestaurantApprovalRequestAvroModel>)MODEL$.createDatumWriter(SCHEMA$);
+    WRITER$ = (org.apache.avro.io.DatumWriter<RestaurantApprovalRequestAvroModel>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
-          throws java.io.IOException {
+    throws java.io.IOException {
     WRITER$.write(this, SpecificData.getEncoder(out));
   }
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumReader<RestaurantApprovalRequestAvroModel>
-          READER$ = (org.apache.avro.io.DatumReader<RestaurantApprovalRequestAvroModel>)MODEL$.createDatumReader(SCHEMA$);
+    READER$ = (org.apache.avro.io.DatumReader<RestaurantApprovalRequestAvroModel>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
-          throws java.io.IOException {
+    throws java.io.IOException {
     READER$.read(this, SpecificData.getDecoder(in));
   }
 

@@ -29,11 +29,11 @@ public class PaymentMessagingDataMapper {
     public PaymentResponseAvroModel orderEventPayloadToPaymentResponseAvroModel(String sagaId,
                                                                                 OrderEventPayload orderEventPayload) {
         return PaymentResponseAvroModel.newBuilder()
-                .setId(UUID.randomUUID().toString())
-                .setSagaId(sagaId)
-                .setPaymentId(orderEventPayload.getPaymentId())
-                .setCustomerId(orderEventPayload.getCustomerId())
-                .setOrderId(orderEventPayload.getOrderId())
+                .setId(UUID.randomUUID())
+                .setSagaId(UUID.fromString(sagaId))
+                .setPaymentId(UUID.fromString(orderEventPayload.getPaymentId()))
+                .setCustomerId(UUID.fromString(orderEventPayload.getCustomerId()))
+                .setOrderId(UUID.fromString(orderEventPayload.getOrderId()))
                 .setPrice(orderEventPayload.getPrice())
                 .setCreatedAt(orderEventPayload.getCreatedAt().toInstant())//??
                 .setPaymentStatus(PaymentStatus.valueOf(orderEventPayload.getPaymentStatus()))

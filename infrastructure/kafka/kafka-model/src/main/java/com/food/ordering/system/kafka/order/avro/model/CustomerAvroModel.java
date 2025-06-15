@@ -5,7 +5,6 @@
  */
 package com.food.ordering.system.kafka.order.avro.model;
 
-import org.apache.avro.generic.GenericArray;
 import org.apache.avro.specific.SpecificData;
 import org.apache.avro.util.Utf8;
 import org.apache.avro.message.BinaryMessageEncoder;
@@ -21,12 +20,15 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
   public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
 
   private static final SpecificData MODEL$ = new SpecificData();
+  static {
+    MODEL$.addLogicalTypeConversion(new org.apache.avro.Conversions.UUIDConversion());
+  }
 
   private static final BinaryMessageEncoder<CustomerAvroModel> ENCODER =
-          new BinaryMessageEncoder<CustomerAvroModel>(MODEL$, SCHEMA$);
+      new BinaryMessageEncoder<>(MODEL$, SCHEMA$);
 
   private static final BinaryMessageDecoder<CustomerAvroModel> DECODER =
-          new BinaryMessageDecoder<CustomerAvroModel>(MODEL$, SCHEMA$);
+      new BinaryMessageDecoder<>(MODEL$, SCHEMA$);
 
   /**
    * Return the BinaryMessageEncoder instance used by this class.
@@ -50,7 +52,7 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
    * @return a BinaryMessageDecoder instance for this class backed by the given SchemaStore
    */
   public static BinaryMessageDecoder<CustomerAvroModel> createDecoder(SchemaStore resolver) {
-    return new BinaryMessageDecoder<CustomerAvroModel>(MODEL$, SCHEMA$, resolver);
+    return new BinaryMessageDecoder<>(MODEL$, SCHEMA$, resolver);
   }
 
   /**
@@ -69,11 +71,11 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
    * @throws java.io.IOException if the given bytes could not be deserialized into an instance of this class
    */
   public static CustomerAvroModel fromByteBuffer(
-          java.nio.ByteBuffer b) throws java.io.IOException {
+      java.nio.ByteBuffer b) throws java.io.IOException {
     return DECODER.decode(b);
   }
 
-  private java.lang.String id;
+  private java.util.UUID id;
   private java.lang.String username;
   private java.lang.String firstName;
   private java.lang.String lastName;
@@ -92,34 +94,39 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
    * @param firstName The new value for firstName
    * @param lastName The new value for lastName
    */
-  public CustomerAvroModel(java.lang.String id, java.lang.String username, java.lang.String firstName, java.lang.String lastName) {
+  public CustomerAvroModel(java.util.UUID id, java.lang.String username, java.lang.String firstName, java.lang.String lastName) {
     this.id = id;
     this.username = username;
     this.firstName = firstName;
     this.lastName = lastName;
   }
 
+  @Override
   public org.apache.avro.specific.SpecificData getSpecificData() { return MODEL$; }
+
+  @Override
   public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+
   // Used by DatumWriter.  Applications should not call.
+  @Override
   public java.lang.Object get(int field$) {
     switch (field$) {
-      case 0: return id;
-      case 1: return username;
-      case 2: return firstName;
-      case 3: return lastName;
-      default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    case 0: return id;
+    case 1: return username;
+    case 2: return firstName;
+    case 3: return lastName;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
   private static final org.apache.avro.Conversion<?>[] conversions =
-          new org.apache.avro.Conversion<?>[] {
-                  null,
-                  null,
-                  null,
-                  null,
-                  null
-          };
+      new org.apache.avro.Conversion<?>[] {
+      new org.apache.avro.Conversions.UUIDConversion(),
+      null,
+      null,
+      null,
+      null
+  };
 
   @Override
   public org.apache.avro.Conversion<?> getConversion(int field) {
@@ -127,14 +134,15 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
   }
 
   // Used by DatumReader.  Applications should not call.
+  @Override
   @SuppressWarnings(value="unchecked")
   public void put(int field$, java.lang.Object value$) {
     switch (field$) {
-      case 0: id = value$ != null ? value$.toString() : null; break;
-      case 1: username = value$ != null ? value$.toString() : null; break;
-      case 2: firstName = value$ != null ? value$.toString() : null; break;
-      case 3: lastName = value$ != null ? value$.toString() : null; break;
-      default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
+    case 0: id = (java.util.UUID)value$; break;
+    case 1: username = value$ != null ? value$.toString() : null; break;
+    case 2: firstName = value$ != null ? value$.toString() : null; break;
+    case 3: lastName = value$ != null ? value$.toString() : null; break;
+    default: throw new IndexOutOfBoundsException("Invalid index: " + field$);
     }
   }
 
@@ -142,7 +150,7 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
    * Gets the value of the 'id' field.
    * @return The value of the 'id' field.
    */
-  public java.lang.String getId() {
+  public java.util.UUID getId() {
     return id;
   }
 
@@ -151,7 +159,7 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
    * Sets the value of the 'id' field.
    * @param value the value to set.
    */
-  public void setId(java.lang.String value) {
+  public void setId(java.util.UUID value) {
     this.id = value;
   }
 
@@ -245,9 +253,9 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
    */
   @org.apache.avro.specific.AvroGenerated
   public static class Builder extends org.apache.avro.specific.SpecificRecordBuilderBase<CustomerAvroModel>
-          implements org.apache.avro.data.RecordBuilder<CustomerAvroModel> {
+    implements org.apache.avro.data.RecordBuilder<CustomerAvroModel> {
 
-    private java.lang.String id;
+    private java.util.UUID id;
     private java.lang.String username;
     private java.lang.String firstName;
     private java.lang.String lastName;
@@ -306,20 +314,20 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
     }
 
     /**
-     * Gets the value of the 'id' field.
-     * @return The value.
-     */
-    public java.lang.String getId() {
+      * Gets the value of the 'id' field.
+      * @return The value.
+      */
+    public java.util.UUID getId() {
       return id;
     }
 
 
     /**
-     * Sets the value of the 'id' field.
-     * @param value The value of 'id'.
-     * @return This builder.
-     */
-    public com.food.ordering.system.kafka.order.avro.model.CustomerAvroModel.Builder setId(java.lang.String value) {
+      * Sets the value of the 'id' field.
+      * @param value The value of 'id'.
+      * @return This builder.
+      */
+    public com.food.ordering.system.kafka.order.avro.model.CustomerAvroModel.Builder setId(java.util.UUID value) {
       validate(fields()[0], value);
       this.id = value;
       fieldSetFlags()[0] = true;
@@ -327,18 +335,18 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
     }
 
     /**
-     * Checks whether the 'id' field has been set.
-     * @return True if the 'id' field has been set, false otherwise.
-     */
+      * Checks whether the 'id' field has been set.
+      * @return True if the 'id' field has been set, false otherwise.
+      */
     public boolean hasId() {
       return fieldSetFlags()[0];
     }
 
 
     /**
-     * Clears the value of the 'id' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'id' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.CustomerAvroModel.Builder clearId() {
       id = null;
       fieldSetFlags()[0] = false;
@@ -346,19 +354,19 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
     }
 
     /**
-     * Gets the value of the 'username' field.
-     * @return The value.
-     */
+      * Gets the value of the 'username' field.
+      * @return The value.
+      */
     public java.lang.String getUsername() {
       return username;
     }
 
 
     /**
-     * Sets the value of the 'username' field.
-     * @param value The value of 'username'.
-     * @return This builder.
-     */
+      * Sets the value of the 'username' field.
+      * @param value The value of 'username'.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.CustomerAvroModel.Builder setUsername(java.lang.String value) {
       validate(fields()[1], value);
       this.username = value;
@@ -367,18 +375,18 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
     }
 
     /**
-     * Checks whether the 'username' field has been set.
-     * @return True if the 'username' field has been set, false otherwise.
-     */
+      * Checks whether the 'username' field has been set.
+      * @return True if the 'username' field has been set, false otherwise.
+      */
     public boolean hasUsername() {
       return fieldSetFlags()[1];
     }
 
 
     /**
-     * Clears the value of the 'username' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'username' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.CustomerAvroModel.Builder clearUsername() {
       username = null;
       fieldSetFlags()[1] = false;
@@ -386,19 +394,19 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
     }
 
     /**
-     * Gets the value of the 'firstName' field.
-     * @return The value.
-     */
+      * Gets the value of the 'firstName' field.
+      * @return The value.
+      */
     public java.lang.String getFirstName() {
       return firstName;
     }
 
 
     /**
-     * Sets the value of the 'firstName' field.
-     * @param value The value of 'firstName'.
-     * @return This builder.
-     */
+      * Sets the value of the 'firstName' field.
+      * @param value The value of 'firstName'.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.CustomerAvroModel.Builder setFirstName(java.lang.String value) {
       validate(fields()[2], value);
       this.firstName = value;
@@ -407,18 +415,18 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
     }
 
     /**
-     * Checks whether the 'firstName' field has been set.
-     * @return True if the 'firstName' field has been set, false otherwise.
-     */
+      * Checks whether the 'firstName' field has been set.
+      * @return True if the 'firstName' field has been set, false otherwise.
+      */
     public boolean hasFirstName() {
       return fieldSetFlags()[2];
     }
 
 
     /**
-     * Clears the value of the 'firstName' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'firstName' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.CustomerAvroModel.Builder clearFirstName() {
       firstName = null;
       fieldSetFlags()[2] = false;
@@ -426,19 +434,19 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
     }
 
     /**
-     * Gets the value of the 'lastName' field.
-     * @return The value.
-     */
+      * Gets the value of the 'lastName' field.
+      * @return The value.
+      */
     public java.lang.String getLastName() {
       return lastName;
     }
 
 
     /**
-     * Sets the value of the 'lastName' field.
-     * @param value The value of 'lastName'.
-     * @return This builder.
-     */
+      * Sets the value of the 'lastName' field.
+      * @param value The value of 'lastName'.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.CustomerAvroModel.Builder setLastName(java.lang.String value) {
       validate(fields()[3], value);
       this.lastName = value;
@@ -447,18 +455,18 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
     }
 
     /**
-     * Checks whether the 'lastName' field has been set.
-     * @return True if the 'lastName' field has been set, false otherwise.
-     */
+      * Checks whether the 'lastName' field has been set.
+      * @return True if the 'lastName' field has been set, false otherwise.
+      */
     public boolean hasLastName() {
       return fieldSetFlags()[3];
     }
 
 
     /**
-     * Clears the value of the 'lastName' field.
-     * @return This builder.
-     */
+      * Clears the value of the 'lastName' field.
+      * @return This builder.
+      */
     public com.food.ordering.system.kafka.order.avro.model.CustomerAvroModel.Builder clearLastName() {
       lastName = null;
       fieldSetFlags()[3] = false;
@@ -470,7 +478,7 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
     public CustomerAvroModel build() {
       try {
         CustomerAvroModel record = new CustomerAvroModel();
-        record.id = fieldSetFlags()[0] ? this.id : (java.lang.String) defaultValue(fields()[0]);
+        record.id = fieldSetFlags()[0] ? this.id : (java.util.UUID) defaultValue(fields()[0]);
         record.username = fieldSetFlags()[1] ? this.username : (java.lang.String) defaultValue(fields()[1]);
         record.firstName = fieldSetFlags()[2] ? this.firstName : (java.lang.String) defaultValue(fields()[2]);
         record.lastName = fieldSetFlags()[3] ? this.lastName : (java.lang.String) defaultValue(fields()[3]);
@@ -485,19 +493,19 @@ public class CustomerAvroModel extends org.apache.avro.specific.SpecificRecordBa
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumWriter<CustomerAvroModel>
-          WRITER$ = (org.apache.avro.io.DatumWriter<CustomerAvroModel>)MODEL$.createDatumWriter(SCHEMA$);
+    WRITER$ = (org.apache.avro.io.DatumWriter<CustomerAvroModel>)MODEL$.createDatumWriter(SCHEMA$);
 
   @Override public void writeExternal(java.io.ObjectOutput out)
-          throws java.io.IOException {
+    throws java.io.IOException {
     WRITER$.write(this, SpecificData.getEncoder(out));
   }
 
   @SuppressWarnings("unchecked")
   private static final org.apache.avro.io.DatumReader<CustomerAvroModel>
-          READER$ = (org.apache.avro.io.DatumReader<CustomerAvroModel>)MODEL$.createDatumReader(SCHEMA$);
+    READER$ = (org.apache.avro.io.DatumReader<CustomerAvroModel>)MODEL$.createDatumReader(SCHEMA$);
 
   @Override public void readExternal(java.io.ObjectInput in)
-          throws java.io.IOException {
+    throws java.io.IOException {
     READER$.read(this, SpecificData.getDecoder(in));
   }
 
